@@ -1,0 +1,22 @@
+PODS:
+  - file_drag_and_drop (0.0.1):
+    - FlutterMacOS
+  - FlutterMacOS (1.0.0)
+
+DEPENDENCIES:
+  - file_drag_and_drop (from `Flutter/ephemeral/.symlinks/plugins/file_drag_and_drop/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+
+EXTERNAL SOURCES:
+  file_drag_and_drop:
+    :path: Flutter/ephemeral/.symlinks/plugins/file_drag_and_drop/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+
+SPEC CHECKSUMS:
+  file_drag_and_drop: 19061fc0b2c9a2d8351a25d344dd87b1710daf3e
+  FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
+
+PODFILE CHECKSUM: 6eac6b3292e5142cfc23bdeb71848a40ec51c14c
+
+COCOAPODS: 1.10.1
