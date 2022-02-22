@@ -20,11 +20,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Lottie Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Powered by phoenixsky'),
     );
   }
 }
@@ -38,57 +39,87 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin
     implements DragContainerListener {
   List<DragFileResult> fileResults = [];
+  late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(vsync: this);
     dragAndDropChannel.addListener(this);
   }
 
   @override
   void dispose() {
     dragAndDropChannel.removeListener(this);
+    _controller.dispose();
     super.dispose();
   }
 
   Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
+  Color currentColor = Colors.transparent;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.title), actions: [
-        ElevatedButton(onPressed: () {
-          showDialog(context: context, builder: (context) {
-            return AlertDialog(title: const Text("Color"),
-              content: ColorPicker(
-                pickerColor: pickerColor,
-                onColorChanged: changeColor,
-              ),
-              actions: <Widget>[
-                ElevatedButton(
-                  child: const Text('Got it'),
-                  onPressed: () {
-                    setState(() => currentColor = pickerColor);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
-        }, child: const Text("背景色"),)
+        MaterialButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Color"),
+                    content: ColorPicker(
+                      pickerColor: pickerColor,
+                      onColorChanged: changeColor,
+                    ),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text('Got it'),
+                        onPressed: () {
+                          setState(() => currentColor = pickerColor);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                });
+          },
+          child: const Text(
+            "自定义背景色",
+            style: TextStyle(color: Colors.white),
+          ),
+        )
       ]),
-      body: Center(
+      body: Container(
+        color: Colors.white,
+        alignment: Alignment.center,
         child: Container(
           color: currentColor,
+          width: 225,
+          height: 400,
+          // width: 900,
+          // height: 1600,
+          alignment: Alignment.topLeft,
           child: (fileResults.isNotEmpty &&
-              fileResults.first.fileExtension == "json")
-              ? Lottie.file(File(fileResults.first.path))
+                  (fileResults.first.fileExtension == "json" ||
+                      fileResults.first.fileExtension == "zip"))
+              ? Lottie.file(
+                  File(fileResults.first.path),
+                  fit:BoxFit.fill,
+                  onLoaded: (composition)=>{
+                    print('hasImages${composition.hasImages}')
+                  },
+                  errorBuilder: (context, error, stackTrace) => Text(error.toString()),
+                  // controller: _controller,
+                )
               : Lottie.network(
-              'https://raw.githubusercontent.com/xvrh/lottie-flutter/master/example/assets/Mobilo/A.json'),
+                  'https://gitee.com/mirrors_xvrh/lottie-flutter/raw/master/example/assets/LottieLogo1.json',
+                  // controller: _controller,
+                ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -121,6 +152,4 @@ class _MyHomePageState extends State<MyHomePage>
   void prepareForDragFileOperation() {
     print("flutter: prepareForDragFileOperation");
   }
-
-
 }
