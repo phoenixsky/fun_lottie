@@ -1,0 +1,13 @@
+  // AppId 的值唯一标识此应用。
+    // 不要在其他应用的安装程序中使用相同的 AppId 值。
+  // 随便来一个guid
+  appId: e1323cea-ec81-4fdf-bd9a-522bda8e81e2
+  appPublisher: Fun Lottie
+  appPublisherUrl: https://github.com/phoenixsky/fun_lottie
+
+
+  // 需要安装 inno
+  // https://jrsoftware.org/isinfo.php
+
+  // 执行
+  // flutter_distributor package --platform windows --targets exe
